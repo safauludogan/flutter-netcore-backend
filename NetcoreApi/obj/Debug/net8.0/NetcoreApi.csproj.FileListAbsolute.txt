@@ -151,3 +151,4 @@ C:\WORK\code\.net\NetcoreApi\NetcoreApi\obj\Debug\net8.0\ref\NetcoreApi.dll
 C:\WORK\code\.net\NetcoreApi\NetcoreApi\bin\Debug\net8.0\appsettings.Production.json
 C:\WORK\code\.net\NetcoreApi\NetcoreApi\bin\Debug\net8.0\dotnet-tools.json
 C:\WORK\code\.net\NetcoreApi\NetcoreApi\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\WORK\code\.net\NetcoreApi\NetcoreApi\obj\Debug\net8.0\NetcoreApi.sourcelink.json

@@ -9,7 +9,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "NetcoreApi.Dto.LoginReq",
+        "Type": "Microsoft.AspNetCore.Identity.Data.LoginRequest",
         "IsRequired": true
       }
     ],
@@ -32,10 +32,36 @@
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "NetcoreApi.Dto.LogoutRequest",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": [
       {
         "Type": "NetcoreApi.Models.ApiResponse\u00601[[System.Boolean, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "NetcoreApi.Controllers.AuthController",
+    "Method": "GetCurrentUser",
+    "RelativePath": "api/Auth/me",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "NetcoreApi.Models.ApiResponse\u00601[[NetcoreApi.Models.User, NetcoreApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -62,6 +88,32 @@
     "ReturnTypes": [
       {
         "Type": "NetcoreApi.Models.ApiResponse\u00601[[NetcoreApi.Dto.RefreshTokenResponse, NetcoreApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "NetcoreApi.Controllers.AuthController",
+    "Method": "RevokeToken",
+    "RelativePath": "api/Auth/revoke-token",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "NetcoreApi.Dto.RevokeTokenRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "NetcoreApi.Models.ApiResponse\u00601[[System.Boolean, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",

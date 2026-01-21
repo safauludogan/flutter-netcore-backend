@@ -636,8 +636,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 👤 Author
 
 **Your Name**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- Email: your.email@example.com
+- GitHub: [@safauludogan](https://github.com/safauludogan)
+- Email: safauludgn@gmail.com
 
 ---
 
@@ -647,12 +647,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Entity Framework Core for data access
 - Swagger for API documentation
 - JWT for authentication
-
----
-
-## 📞 Support
-
-For support, email your.email@example.com or create an issue in this repository.
 
 ---
 

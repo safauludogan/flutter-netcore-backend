@@ -151,3 +151,4 @@ C:\WORK\code\.net\NetcoreApi\NetcoreApi\obj\Release\net8.0\refint\NetcoreApi.dll
 C:\WORK\code\.net\NetcoreApi\NetcoreApi\obj\Release\net8.0\NetcoreApi.pdb
 C:\WORK\code\.net\NetcoreApi\NetcoreApi\obj\Release\net8.0\NetcoreApi.genruntimeconfig.cache
 C:\WORK\code\.net\NetcoreApi\NetcoreApi\obj\Release\net8.0\ref\NetcoreApi.dll
+C:\WORK\code\.net\NetcoreApi\NetcoreApi\obj\Release\net8.0\NetcoreApi.sourcelink.json

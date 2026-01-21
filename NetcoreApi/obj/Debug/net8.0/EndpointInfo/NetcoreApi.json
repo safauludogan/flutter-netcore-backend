@@ -14,17 +14,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LoginReq"
+                "$ref": "#/components/schemas/LoginRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/LoginReq"
+                "$ref": "#/components/schemas/LoginRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/LoginReq"
+                "$ref": "#/components/schemas/LoginRequest"
               }
             }
           }
@@ -106,6 +106,102 @@
         "tags": [
           "Auth"
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LogoutRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LogoutRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LogoutRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Auth/me": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Auth/revoke-token": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RevokeTokenRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RevokeTokenRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RevokeTokenRequest"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK",
@@ -1213,7 +1309,11 @@
         },
         "additionalProperties": false
       },
-      "LoginReq": {
+      "LoginRequest": {
+        "required": [
+          "Email",
+          "Password"
+        ],
         "type": "object",
         "properties": {
           "Email": {
@@ -1221,6 +1321,14 @@
             "nullable": true
           },
           "Password": {
+            "type": "string",
+            "nullable": true
+          },
+          "TwoFactorCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "TwoFactorRecoveryCode": {
             "type": "string",
             "nullable": true
           }
@@ -1272,6 +1380,16 @@
           "Metadata": {
             "type": "object",
             "additionalProperties": { },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LogoutRequest": {
+        "type": "object",
+        "properties": {
+          "RefreshToken": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -1435,6 +1553,16 @@
         },
         "additionalProperties": false
       },
+      "RevokeTokenRequest": {
+        "type": "object",
+        "properties": {
+          "RefreshToken": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "UpdateProductDto": {
         "type": "object",
         "properties": {
@@ -1573,6 +1701,19 @@
         },
         "additionalProperties": false
       }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "description": "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
+        "scheme": "Bearer",
+        "bearerFormat": "JWT"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "Bearer": [ ]
+    }
+  ]
 }
