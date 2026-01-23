@@ -19,6 +19,7 @@ Professional .NET Core Web API for testing Flutter HTTP client with comprehensiv
 - [Database Schema](#database-schema)
 - [Configuration](#configuration)
 - [Usage Examples](#usage-examples)
+- [Refresh Token Management](#refresh-token-management)
 - [Deployment](#deployment)
 
 ---
@@ -26,19 +27,23 @@ Professional .NET Core Web API for testing Flutter HTTP client with comprehensiv
 ## ✨ Features
 
 ### Core Features
+
 - ✅ **CRUD Operations** - Complete Create, Read, Update, Delete for Users & Products
 - ✅ **File Upload/Download** - Single & multiple file uploads with metadata tracking
 - ✅ **Authentication** - JWT-based authentication with refresh tokens
+- ✅ **Refresh Token Management** - Secure token rotation with expiration tracking
 - ✅ **Pagination** - Built-in pagination support for list endpoints
 - ✅ **Soft Delete** - Non-destructive delete operations
 
 ### Testing Features
+
 - ✅ **Error Simulation** - Simulate 500, 401, 404, timeout errors via headers
 - ✅ **Delay Simulation** - Add custom delays to test loading states
 - ✅ **Random Error Rate** - Configure random error probability
 - ✅ **Request Logging** - Comprehensive request/response logging
 
 ### Response Types
+
 - ✅ **Generic Wrapper** - `ApiResponse<T>` for consistent responses
 - ✅ **Direct Models** - Return models without wrapper
 - ✅ **Primitives** - Return string, int, bool directly
@@ -72,12 +77,15 @@ NetCoreBackend/
 │   ├── User.cs                     # User entity & DTOs
 │   ├── Product.cs                  # Product entity & DTOs
 │   ├── Order.cs                    # Order entity & DTOs
-│   └── FileMetadata.cs             # File metadata entity
+│   ├── FileMetadata.cs             # File metadata entity
+│   └── RefreshToken.cs             # Refresh token entity
 ├── Services/
 │   ├── IFileService.cs             # File service interface
 │   ├── FileService.cs              # File operations implementation
 │   ├── IAuthService.cs             # Auth service interface
-│   └── AuthService.cs              # JWT token generation
+│   ├── AuthService.cs              # JWT token generation
+│   ├── ITokenService.cs            # Token service interface
+│   └── TokenService.cs             # Token management & rotation
 ├── Middleware/
 │   ├── ErrorSimulatorMiddleware.cs # Error simulation for testing
 │   ├── DelayMiddleware.cs          # Delay simulation for testing
@@ -95,22 +103,17 @@ NetCoreBackend/
 
 ## 🚀 Getting Started
 
-### Prerequisites
-
-- [.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
-- [SQL Server](https://www.microsoft.com/sql-server/sql-server-downloads) or SQL Server LocalDB
-- [Visual Studio 2022](https://visualstudio.microsoft.com/) or [VS Code](https://code.visualstudio.com/)
-- [Postman](https://www.postman.com/) or similar API testing tool (optional)
-
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/safauludogan/flutter-netcore-backend.git
    cd flutter-netcore-backend
    ```
 
 2. **Install required packages**
+
    ```bash
    dotnet add package Microsoft.EntityFrameworkCore.SqlServer
    dotnet add package Microsoft.EntityFrameworkCore.Tools
@@ -121,8 +124,9 @@ NetCoreBackend/
    ```
 
 3. **Update connection string** (if needed)
-   
+
    Edit `appsettings.json`:
+
    ```json
    "ConnectionStrings": {
      "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=FlutterNetCoreDb;Trusted_Connection=True;"
@@ -130,12 +134,14 @@ NetCoreBackend/
    ```
 
 4. **Create database**
+
    ```bash
    dotnet ef migrations add InitialCreate
    dotnet ef database update
    ```
 
 5. **Run the application**
+
    ```bash
    dotnet run
    ```
@@ -151,53 +157,56 @@ NetCoreBackend/
 
 ### 👥 Users API
 
-| Method | Endpoint | Response Type | Description |
-|--------|----------|---------------|-------------|
-| `GET` | `/api/users` | `ApiResponse<List<User>>` | Get all users (paginated) |
-| `GET` | `/api/users/{id}` | `ApiResponse<User>` | Get user by ID |
-| `GET` | `/api/users/{id}/simple` | `User` | Get user (no wrapper) |
-| `GET` | `/api/users/{id}/name` | `string` | Get user name only |
-| `GET` | `/api/users/count` | `int` | Get total user count |
-| `GET` | `/api/users/{id}/exists` | `bool` | Check if user exists |
-| `GET` | `/api/users/{id}/info` | `Dictionary<string, object>` | Get user info as map |
-| `POST` | `/api/users` | `ApiResponse<User>` | Create new user |
-| `PUT` | `/api/users/{id}` | `ApiResponse<User>` | Update user |
-| `PATCH` | `/api/users/{id}/activate` | `void (204)` | Activate user |
-| `DELETE` | `/api/users/{id}` | `ApiResponse<bool>` | Delete user (soft) |
+| Method   | Endpoint                   | Response Type                | Description               |
+| -------- | -------------------------- | ---------------------------- | ------------------------- |
+| `GET`    | `/api/users`               | `ApiResponse<List<User>>`    | Get all users (paginated) |
+| `GET`    | `/api/users/{id}`          | `ApiResponse<User>`          | Get user by ID            |
+| `GET`    | `/api/users/{id}/simple`   | `User`                       | Get user (no wrapper)     |
+| `GET`    | `/api/users/{id}/name`     | `string`                     | Get user name only        |
+| `GET`    | `/api/users/count`         | `int`                        | Get total user count      |
+| `GET`    | `/api/users/{id}/exists`   | `bool`                       | Check if user exists      |
+| `GET`    | `/api/users/{id}/info`     | `Dictionary<string, object>` | Get user info as map      |
+| `POST`   | `/api/users`               | `ApiResponse<User>`          | Create new user           |
+| `PUT`    | `/api/users/{id}`          | `ApiResponse<User>`          | Update user               |
+| `PATCH`  | `/api/users/{id}/activate` | `void (204)`                 | Activate user             |
+| `DELETE` | `/api/users/{id}`          | `ApiResponse<bool>`          | Delete user (soft)        |
 
 **Query Parameters for GET /api/users:**
+
 - `page` (default: 1) - Page number
 - `pageSize` (default: 10) - Items per page
 - `search` - Search by name or email
 
 ### 📦 Products API
 
-| Method | Endpoint | Response Type | Description |
-|--------|----------|---------------|-------------|
-| `GET` | `/api/products` | `ApiResponse<List<Product>>` | Get all products |
-| `GET` | `/api/products/{id}` | `ApiResponse<Product>` | Get product by ID |
-| `POST` | `/api/products` | `ApiResponse<Product>` | Create new product |
-| `PUT` | `/api/products/{id}` | `ApiResponse<Product>` | Update product |
-| `DELETE` | `/api/products/{id}` | `ApiResponse<bool>` | Delete product |
+| Method   | Endpoint             | Response Type                | Description        |
+| -------- | -------------------- | ---------------------------- | ------------------ |
+| `GET`    | `/api/products`      | `ApiResponse<List<Product>>` | Get all products   |
+| `GET`    | `/api/products/{id}` | `ApiResponse<Product>`       | Get product by ID  |
+| `POST`   | `/api/products`      | `ApiResponse<Product>`       | Create new product |
+| `PUT`    | `/api/products/{id}` | `ApiResponse<Product>`       | Update product     |
+| `DELETE` | `/api/products/{id}` | `ApiResponse<bool>`          | Delete product     |
 
 ### 📁 Files API
 
-| Method | Endpoint | Response Type | Description |
-|--------|----------|---------------|-------------|
-| `GET` | `/api/files` | `ApiResponse<List<FileMetadata>>` | List all uploaded files |
-| `GET` | `/api/files/{id}` | `ApiResponse<FileMetadata>` | Get file metadata |
-| `GET` | `/api/files/{id}/download` | `File` | Download file |
-| `POST` | `/api/files/upload` | `ApiResponse<FileMetadata>` | Upload single file |
-| `POST` | `/api/files/upload-multiple` | `ApiResponse<List<FileMetadata>>` | Upload multiple files |
-| `DELETE` | `/api/files/{id}` | `ApiResponse<bool>` | Delete file |
+| Method   | Endpoint                     | Response Type                     | Description             |
+| -------- | ---------------------------- | --------------------------------- | ----------------------- |
+| `GET`    | `/api/files`                 | `ApiResponse<List<FileMetadata>>` | List all uploaded files |
+| `GET`    | `/api/files/{id}`            | `ApiResponse<FileMetadata>`       | Get file metadata       |
+| `GET`    | `/api/files/{id}/download`   | `File`                            | Download file           |
+| `POST`   | `/api/files/upload`          | `ApiResponse<FileMetadata>`       | Upload single file      |
+| `POST`   | `/api/files/upload-multiple` | `ApiResponse<List<FileMetadata>>` | Upload multiple files   |
+| `DELETE` | `/api/files/{id}`            | `ApiResponse<bool>`               | Delete file             |
 
 ### 🔐 Auth API
 
-| Method | Endpoint | Response Type | Description |
-|--------|----------|---------------|-------------|
-| `POST` | `/api/auth/login` | `ApiResponse<LoginResponse>` | User login |
-| `POST` | `/api/auth/refresh` | `ApiResponse<RefreshTokenResponse>` | Refresh access token |
-| `POST` | `/api/auth/logout` | `ApiResponse<bool>` | User logout |
+| Method | Endpoint                    | Response Type                       | Description              |
+| ------ | --------------------------- | ----------------------------------- | ------------------------ |
+| `POST` | `/api/auth/login`           | `ApiResponse<LoginResponse>`        | User login               |
+| `POST` | `/api/auth/refresh`         | `ApiResponse<RefreshTokenResponse>` | Refresh access token     |
+| `POST` | `/api/auth/logout`          | `ApiResponse<bool>`                 | User logout              |
+| `POST` | `/api/auth/revoke`          | `ApiResponse<bool>`                 | Revoke refresh token     |
+| `GET`  | `/api/auth/tokens/{userId}` | `ApiResponse<List<TokenInfo>>`      | Get user's active tokens |
 
 ---
 
@@ -208,24 +217,28 @@ NetCoreBackend/
 Simulate various error scenarios using custom headers:
 
 #### 1. Simulate 500 Internal Server Error
+
 ```bash
 curl -X GET http://localhost:5000/api/users \
   -H "X-Simulate-Error: 500"
 ```
 
 #### 2. Simulate Timeout
+
 ```bash
 curl -X GET http://localhost:5000/api/users \
   -H "X-Simulate-Error: timeout"
 ```
 
 #### 3. Simulate Network Error
+
 ```bash
 curl -X GET http://localhost:5000/api/users \
   -H "X-Simulate-Error: network"
 ```
 
 #### 4. Simulate 401 Unauthorized
+
 ```bash
 curl -X GET http://localhost:5000/api/users \
   -H "X-Simulate-Error: unauthorized"
@@ -265,6 +278,7 @@ curl -X GET http://localhost:5000/api/users \
 ## 🗄️ Database Schema
 
 ### Users Table
+
 ```sql
 Id                uniqueidentifier    PRIMARY KEY
 Name              nvarchar(100)       NOT NULL
@@ -277,6 +291,7 @@ IsActive          bit                 NOT NULL DEFAULT 1
 ```
 
 ### Products Table
+
 ```sql
 Id              uniqueidentifier    PRIMARY KEY
 Name            nvarchar(200)       NOT NULL
@@ -288,7 +303,25 @@ CreatedAt       datetime2           NOT NULL
 UpdatedAt       datetime2           NULL
 ```
 
+### RefreshToken Table
+
+```sql
+Id                  uniqueidentifier    PRIMARY KEY
+UserId              uniqueidentifier    FOREIGN KEY NOT NULL
+Token               nvarchar(500)       NOT NULL UNIQUE
+JwtTokenId          nvarchar(255)       NOT NULL
+ExpiresAt           datetime2           NOT NULL
+CreatedAt           datetime2           NOT NULL
+RevokedAt           datetime2           NULL
+IsRevoked           bit                 NOT NULL DEFAULT 0
+IsUsed              bit                 NOT NULL DEFAULT 0
+ReplacedByToken     nvarchar(500)       NULL
+IPAddress           nvarchar(50)        NULL
+UserAgent           nvarchar(500)       NULL
+```
+
 ### FileMetadata Table
+
 ```sql
 Id                  uniqueidentifier    PRIMARY KEY
 FileName            nvarchar(255)       NOT NULL
@@ -301,6 +334,7 @@ UploadedByUserId    uniqueidentifier    NULL FOREIGN KEY
 ```
 
 ### Orders Table
+
 ```sql
 Id              uniqueidentifier    PRIMARY KEY
 UserId          uniqueidentifier    FOREIGN KEY
@@ -334,7 +368,8 @@ UpdatedAt       datetime2           NULL
     "SecretKey": "YourSuperSecretKeyForJWTTokenGeneration123456",
     "Issuer": "FlutterNetCoreBackend",
     "Audience": "FlutterApp",
-    "ExpirationMinutes": 60
+    "AccessTokenExpirationMinutes": 15,
+    "RefreshTokenExpirationDays": 7
   },
   "FileUpload": {
     "MaxFileSize": 10485760,
@@ -371,6 +406,7 @@ curl -X POST http://localhost:5000/api/users \
 ```
 
 **Response:**
+
 ```json
 {
   "data": {
@@ -398,12 +434,13 @@ curl -X POST http://localhost:5000/api/auth/login \
 ```
 
 **Response:**
+
 ```json
 {
   "data": {
     "accessToken": "eyJhbGciOiJIUzI1NiIs...",
     "refreshToken": "dGVzdHJlZnJlc2h0b2tlbg==",
-    "expiresIn": 3600,
+    "expiresIn": 900,
     "user": {
       "id": "123e4567-e89b-12d3-a456-426614174000",
       "name": "John Doe",
@@ -416,7 +453,33 @@ curl -X POST http://localhost:5000/api/auth/login \
 }
 ```
 
-### 3. Upload File
+### 3. Refresh Access Token
+
+```bash
+curl -X POST http://localhost:5000/api/auth/refresh \
+  -H "Content-Type: application/json" \
+  -d '{
+    "refreshToken": "dGVzdHJlZnJlc2h0b2tlbg=="
+  }'
+```
+
+**Response:**
+
+```json
+{
+  "data": {
+    "accessToken": "eyJhbGciOiJIUzI1NiIs...",
+    "refreshToken": "bmV3cmVmcmVzaHRva2VubmV3",
+    "expiresIn": 900,
+    "tokenType": "Bearer"
+  },
+  "success": true,
+  "statusCode": 200,
+  "message": "Token refreshed successfully"
+}
+```
+
+### 4. Upload File
 
 ```bash
 curl -X POST http://localhost:5000/api/files/upload \
@@ -425,6 +488,7 @@ curl -X POST http://localhost:5000/api/files/upload \
 ```
 
 **Response:**
+
 ```json
 {
   "data": {
@@ -442,13 +506,14 @@ curl -X POST http://localhost:5000/api/files/upload \
 }
 ```
 
-### 4. Get Users with Pagination
+### 5. Get Users with Pagination
 
 ```bash
 curl -X GET "http://localhost:5000/api/users?page=1&pageSize=10&search=john"
 ```
 
 **Response:**
+
 ```json
 {
   "data": [
@@ -469,6 +534,88 @@ curl -X GET "http://localhost:5000/api/users?page=1&pageSize=10&search=john"
   }
 }
 ```
+
+---
+
+## 🔄 Refresh Token Management
+
+### Overview
+
+Refresh tokens provide a secure way to obtain new access tokens without re-entering credentials. The system implements token rotation for enhanced security.
+
+### Key Features
+
+- **Automatic Token Rotation**: Each refresh operation generates a new refresh token
+- **Token Revocation**: Manually revoke tokens for security
+- **Expiration Tracking**: Tokens automatically expire based on configuration
+- **Multi-Device Support**: Track multiple active tokens per user
+- **Security Context**: Store IP address and user agent for forensics
+
+### Refresh Token Lifecycle
+
+1. **Login**: User receives access token (15 min) and refresh token (7 days)
+2. **Access Token Expires**: Client uses refresh token to get new access token
+3. **Automatic Rotation**: Old refresh token is marked as used, new token issued
+4. **Revocation Chain**: Old token cannot be reused, preventing token reuse attacks
+5. **Logout/Revoke**: User can explicitly revoke active tokens
+
+### Getting Active Tokens
+
+```bash
+curl -X GET http://localhost:5000/api/auth/tokens/123e4567-e89b-12d3-a456-426614174000 \
+  -H "Authorization: Bearer {accessToken}"
+```
+
+**Response:**
+
+```json
+{
+  "data": [
+    {
+      "id": "token-id-1",
+      "expiresAt": "2024-01-22T10:30:00Z",
+      "isRevoked": false,
+      "isUsed": false,
+      "createdAt": "2024-01-15T10:30:00Z",
+      "ipAddress": "192.168.1.1",
+      "userAgent": "Mozilla/5.0..."
+    }
+  ],
+  "success": true,
+  "statusCode": 200
+}
+```
+
+### Revoking a Token
+
+```bash
+curl -X POST http://localhost:5000/api/auth/revoke \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {accessToken}" \
+  -d '{
+    "refreshToken": "dGVzdHJlZnJlc2h0b2tlbg=="
+  }'
+```
+
+**Response:**
+
+```json
+{
+  "data": true,
+  "success": true,
+  "statusCode": 200,
+  "message": "Token revoked successfully"
+}
+```
+
+### Security Best Practices
+
+- Store refresh tokens securely (encrypted in device storage)
+- Use HTTPS only for token transmission
+- Implement token rotation in client apps
+- Clear tokens on logout
+- Monitor token usage for suspicious activity
+- Revoke tokens if suspicious activity detected
 
 ---
 
@@ -505,11 +652,13 @@ dotnet ef database update
 The database is automatically seeded with initial data:
 
 ### Users (3 records)
+
 - **john@example.com** - password123
 - **jane@example.com** - password123
 - **bob@example.com** - password123
 
 ### Products (3 records)
+
 - **Laptop** - $999.99 (Stock: 10)
 - **Mouse** - $29.99 (Stock: 50)
 - **Keyboard** - $89.99 (Stock: 30)
@@ -574,6 +723,7 @@ Import the Postman collection:
 ## 🔍 Debugging
 
 ### Visual Studio
+
 1. Press `F5` to start debugging
 2. Set breakpoints in code
 3. Make API requests
@@ -636,6 +786,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 👤 Author
 
 **Your Name**
+
 - GitHub: [@safauludogan](https://github.com/safauludogan)
 - Email: safauludgn@gmail.com
 
@@ -646,7 +797,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Built with .NET 8.0
 - Entity Framework Core for data access
 - Swagger for API documentation
-- JWT for authentication
+- JWT for authentication with refresh token rotation
 
 ---
 
