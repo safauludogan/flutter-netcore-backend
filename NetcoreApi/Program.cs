@@ -46,13 +46,14 @@ var env = builder.Environment;
 
 builder.Configuration
     .SetBasePath(env.ContentRootPath)
-     .AddJsonFile("appsettings.json", optional: false)
-     .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+     .AddJsonFile("appsettings.json", optional: false, true)
+     .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, true)
+     .AddEnvironmentVariables();
 #endregion
 
 // Database Context
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Services
 builder.Services.AddScoped<IFileService, FileService>();

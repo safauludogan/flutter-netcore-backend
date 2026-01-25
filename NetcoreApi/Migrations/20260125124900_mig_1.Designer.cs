@@ -2,18 +2,18 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetcoreApi;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace NetcoreApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260121192727_mig_2")]
-    partial class mig_2
+    [Migration("20260125124900_mig_1")]
+    partial class mig_1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,40 +21,40 @@ namespace NetcoreApi.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.23")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("NetcoreApi.Models.FileMetadata", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("ContentType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("FileName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("FilePath")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("OriginalFileName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<long>("Size")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("UploadedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("UploadedByUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -65,28 +65,28 @@ namespace NetcoreApi.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Status")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("numeric");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -101,30 +101,30 @@ namespace NetcoreApi.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("numeric");
 
                     b.Property<int>("Stock")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -133,8 +133,8 @@ namespace NetcoreApi.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("378bff0d-51d4-4820-81c4-a39cf0f1ca91"),
-                            CreatedAt = new DateTime(2026, 1, 21, 19, 27, 26, 881, DateTimeKind.Utc).AddTicks(8373),
+                            Id = new Guid("b0f62d85-5682-4ee4-b348-32132ee5c71e"),
+                            CreatedAt = new DateTime(2026, 1, 25, 12, 49, 0, 476, DateTimeKind.Utc).AddTicks(9430),
                             Description = "High-performance laptop",
                             Name = "Laptop",
                             Price = 999.99m,
@@ -142,8 +142,8 @@ namespace NetcoreApi.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d3409309-97a1-4174-bd4b-6fc34fb36f60"),
-                            CreatedAt = new DateTime(2026, 1, 21, 19, 27, 26, 881, DateTimeKind.Utc).AddTicks(8376),
+                            Id = new Guid("627f2bc5-0131-4a26-9e46-948443561a7d"),
+                            CreatedAt = new DateTime(2026, 1, 25, 12, 49, 0, 476, DateTimeKind.Utc).AddTicks(9432),
                             Description = "Wireless mouse",
                             Name = "Mouse",
                             Price = 29.99m,
@@ -151,8 +151,8 @@ namespace NetcoreApi.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d80e93fb-22ce-409f-b385-432470e0d130"),
-                            CreatedAt = new DateTime(2026, 1, 21, 19, 27, 26, 881, DateTimeKind.Utc).AddTicks(8377),
+                            Id = new Guid("942e92d6-e130-4b0f-bc9f-06265fa9168b"),
+                            CreatedAt = new DateTime(2026, 1, 25, 12, 49, 0, 476, DateTimeKind.Utc).AddTicks(9434),
                             Description = "Mechanical keyboard",
                             Name = "Keyboard",
                             Price = 89.99m,
@@ -164,32 +164,32 @@ namespace NetcoreApi.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("ExpiresAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsRevoked")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("ReplacedByToken")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("RevokedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("RevokedReason")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Token")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -205,31 +205,31 @@ namespace NetcoreApi.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProfileImageUrl")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -239,7 +239,7 @@ namespace NetcoreApi.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTime(2026, 1, 21, 19, 27, 26, 881, DateTimeKind.Utc).AddTicks(8266),
+                            CreatedAt = new DateTime(2026, 1, 25, 12, 49, 0, 476, DateTimeKind.Utc).AddTicks(9316),
                             Email = "john@example.com",
                             IsActive = true,
                             Name = "John Doe",
@@ -248,7 +248,7 @@ namespace NetcoreApi.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-222222222222"),
-                            CreatedAt = new DateTime(2026, 1, 21, 19, 27, 26, 881, DateTimeKind.Utc).AddTicks(8269),
+                            CreatedAt = new DateTime(2026, 1, 25, 12, 49, 0, 476, DateTimeKind.Utc).AddTicks(9318),
                             Email = "jane@example.com",
                             IsActive = true,
                             Name = "Jane Smith",
@@ -257,7 +257,7 @@ namespace NetcoreApi.Migrations
                         new
                         {
                             Id = new Guid("33333333-3333-3333-3333-333333333333"),
-                            CreatedAt = new DateTime(2026, 1, 21, 19, 27, 26, 881, DateTimeKind.Utc).AddTicks(8270),
+                            CreatedAt = new DateTime(2026, 1, 25, 12, 49, 0, 476, DateTimeKind.Utc).AddTicks(9320),
                             Email = "bob@example.com",
                             IsActive = true,
                             Name = "Bob Johnson",
