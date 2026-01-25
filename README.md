@@ -694,6 +694,9 @@ ENTRYPOINT ["dotnet", "NetCoreBackend.dll"]
 ### Build & Run
 
 ```bash
+# Run from project path
+docker compose up -d --build
+
 # Build Docker image
 docker build -t netcore-backend .
 

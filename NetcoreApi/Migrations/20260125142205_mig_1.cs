@@ -127,9 +127,9 @@ namespace NetcoreApi.Migrations
                 columns: new[] { "Id", "CreatedAt", "Description", "ImageUrl", "Name", "Price", "Stock", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { new Guid("627f2bc5-0131-4a26-9e46-948443561a7d"), new DateTime(2026, 1, 25, 12, 49, 0, 476, DateTimeKind.Utc).AddTicks(9432), "Wireless mouse", null, "Mouse", 29.99m, 50, null },
-                    { new Guid("942e92d6-e130-4b0f-bc9f-06265fa9168b"), new DateTime(2026, 1, 25, 12, 49, 0, 476, DateTimeKind.Utc).AddTicks(9434), "Mechanical keyboard", null, "Keyboard", 89.99m, 30, null },
-                    { new Guid("b0f62d85-5682-4ee4-b348-32132ee5c71e"), new DateTime(2026, 1, 25, 12, 49, 0, 476, DateTimeKind.Utc).AddTicks(9430), "High-performance laptop", null, "Laptop", 999.99m, 10, null }
+                    { new Guid("1e09b5d0-26a2-4b9c-8b62-181da1aceb02"), new DateTime(2026, 1, 25, 14, 18, 16, 53, DateTimeKind.Utc).AddTicks(8200), "Wireless mouse", null, "Mouse", 29.99m, 50, null },
+                    { new Guid("1e09b5d0-26a2-4b9c-8b62-181da1aceb01"), new DateTime(2026, 1, 25, 14, 18, 6, 827, DateTimeKind.Utc).AddTicks(8880), "High-performance laptop", null, "Laptop", 999.99m, 10, null },
+                    { new Guid("3e09b5d0-26a2-4b9c-8b62-181da1aceb03"), new DateTime(2026, 1, 25, 14, 18, 34, 454, DateTimeKind.Utc).AddTicks(7930), "Mechanical keyboard", null, "Keyboard", 89.99m, 30, null }
                 });
 
             migrationBuilder.InsertData(
@@ -137,9 +137,9 @@ namespace NetcoreApi.Migrations
                 columns: new[] { "Id", "CreatedAt", "Email", "IsActive", "Name", "Password", "ProfileImageUrl", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { new Guid("11111111-1111-1111-1111-111111111111"), new DateTime(2026, 1, 25, 12, 49, 0, 476, DateTimeKind.Utc).AddTicks(9316), "john@example.com", true, "John Doe", "password123", null, null },
-                    { new Guid("22222222-2222-2222-2222-222222222222"), new DateTime(2026, 1, 25, 12, 49, 0, 476, DateTimeKind.Utc).AddTicks(9318), "jane@example.com", true, "Jane Smith", "password123", null, null },
-                    { new Guid("33333333-3333-3333-3333-333333333333"), new DateTime(2026, 1, 25, 12, 49, 0, 476, DateTimeKind.Utc).AddTicks(9320), "bob@example.com", true, "Bob Johnson", "password123", null, null }
+                    { new Guid("01e09b5d-26a2-4b9c-8b62-181da1aceb04"), new DateTime(2026, 1, 25, 14, 16, 57, 985, DateTimeKind.Utc).AddTicks(8300), "john@example.com", true, "John Doe", "password123", null, null },
+                    { new Guid("cb1a41f2-027e-4432-ad0c-ad80cb3d112b"), new DateTime(2026, 1, 25, 14, 17, 33, 279, DateTimeKind.Utc).AddTicks(1100), "jane@example.com", true, "Jane Smith", "password123", null, null },
+                    { new Guid("f5e0bf5c-de26-4b69-9795-1c8caf1e5f37"), new DateTime(2026, 1, 25, 14, 17, 41, 352, DateTimeKind.Utc).AddTicks(8790), "bob@example.com", true, "Bob Johnson", "password123", null, null }
                 });
 
             migrationBuilder.CreateIndex(

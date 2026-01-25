@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NetcoreApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260125124900_mig_1")]
+    [Migration("20260125142205_mig_1")]
     partial class mig_1
     {
         /// <inheritdoc />
@@ -133,8 +133,8 @@ namespace NetcoreApi.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("b0f62d85-5682-4ee4-b348-32132ee5c71e"),
-                            CreatedAt = new DateTime(2026, 1, 25, 12, 49, 0, 476, DateTimeKind.Utc).AddTicks(9430),
+                            Id = new Guid("33858fa3-4b79-49b5-bfcc-1369f31ddb56"),
+                            CreatedAt = new DateTime(2026, 1, 25, 14, 18, 6, 827, DateTimeKind.Unspecified).AddTicks(8880),
                             Description = "High-performance laptop",
                             Name = "Laptop",
                             Price = 999.99m,
@@ -142,8 +142,8 @@ namespace NetcoreApi.Migrations
                         },
                         new
                         {
-                            Id = new Guid("627f2bc5-0131-4a26-9e46-948443561a7d"),
-                            CreatedAt = new DateTime(2026, 1, 25, 12, 49, 0, 476, DateTimeKind.Utc).AddTicks(9432),
+                            Id = new Guid("1995ac47-9c05-47b8-b053-a16c709b0e8c"),
+                            CreatedAt = new DateTime(2026, 1, 25, 14, 18, 16, 53, DateTimeKind.Unspecified).AddTicks(8200),
                             Description = "Wireless mouse",
                             Name = "Mouse",
                             Price = 29.99m,
@@ -151,8 +151,8 @@ namespace NetcoreApi.Migrations
                         },
                         new
                         {
-                            Id = new Guid("942e92d6-e130-4b0f-bc9f-06265fa9168b"),
-                            CreatedAt = new DateTime(2026, 1, 25, 12, 49, 0, 476, DateTimeKind.Utc).AddTicks(9434),
+                            Id = new Guid("d71affe2-4ad2-46d2-a5f2-5dba963f41ba"),
+                            CreatedAt = new DateTime(2026, 1, 25, 14, 18, 34, 454, DateTimeKind.Unspecified).AddTicks(7930),
                             Description = "Mechanical keyboard",
                             Name = "Keyboard",
                             Price = 89.99m,
@@ -238,8 +238,8 @@ namespace NetcoreApi.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTime(2026, 1, 25, 12, 49, 0, 476, DateTimeKind.Utc).AddTicks(9316),
+                            Id = new Guid("01e09b5d-26a2-4b9c-8b62-181da1aceb04"),
+                            CreatedAt = new DateTime(2026, 1, 25, 14, 16, 57, 985, DateTimeKind.Unspecified).AddTicks(8300),
                             Email = "john@example.com",
                             IsActive = true,
                             Name = "John Doe",
@@ -247,8 +247,8 @@ namespace NetcoreApi.Migrations
                         },
                         new
                         {
-                            Id = new Guid("22222222-2222-2222-2222-222222222222"),
-                            CreatedAt = new DateTime(2026, 1, 25, 12, 49, 0, 476, DateTimeKind.Utc).AddTicks(9318),
+                            Id = new Guid("cb1a41f2-027e-4432-ad0c-ad80cb3d112b"),
+                            CreatedAt = new DateTime(2026, 1, 25, 14, 17, 33, 279, DateTimeKind.Unspecified).AddTicks(1100),
                             Email = "jane@example.com",
                             IsActive = true,
                             Name = "Jane Smith",
@@ -256,8 +256,8 @@ namespace NetcoreApi.Migrations
                         },
                         new
                         {
-                            Id = new Guid("33333333-3333-3333-3333-333333333333"),
-                            CreatedAt = new DateTime(2026, 1, 25, 12, 49, 0, 476, DateTimeKind.Utc).AddTicks(9320),
+                            Id = new Guid("f5e0bf5c-de26-4b69-9795-1c8caf1e5f37"),
+                            CreatedAt = new DateTime(2026, 1, 25, 14, 17, 41, 352, DateTimeKind.Unspecified).AddTicks(8790),
                             Email = "bob@example.com",
                             IsActive = true,
                             Name = "Bob Johnson",

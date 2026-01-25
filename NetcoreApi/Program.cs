@@ -130,6 +130,13 @@ app.UseMiddleware<ErrorSimulatorMiddleware>();
 app.UseMiddleware<DelayMiddleware>();
 app.UseMiddleware<RequestLoggingMiddleware>();
 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
+
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/error");
@@ -137,11 +144,20 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+var _uploads = "uploads";
+var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), _uploads);
+
+if (!Directory.Exists(uploadsPath))
+{
+    Directory.CreateDirectory(uploadsPath);
+}
+
+
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "uploads")),
-    RequestPath = "/uploads"
+        Path.Combine(Directory.GetCurrentDirectory(), _uploads)),
+    RequestPath = $"/{_uploads}"
 });
 
 app.UseAuthentication();
