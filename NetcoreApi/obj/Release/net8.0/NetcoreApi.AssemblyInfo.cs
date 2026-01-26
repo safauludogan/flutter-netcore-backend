@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NetcoreApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+eacfd38168e0313550d29025f335c7b748acf8ef")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0df56cb0e5d0f850aca1f7a8f3b4c78ad5c64c4d")]
 [assembly: System.Reflection.AssemblyProductAttribute("NetcoreApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NetcoreApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NetcoreApi.Models;
-using System.Security.Claims;
 
 namespace NetcoreApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase // [Authorize]'ı KALDIR - endpoint bazlı yap
@@ -21,7 +21,6 @@ namespace NetcoreApi.Controllers
 
         // GET: api/users - Returns ApiResponse<List<User>>
         // ✅ AUTH GEREKMİYOR - Public endpoint
-        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<ApiResponse<List<User>>>> GetUsers(
             [FromQuery] int page = 1,
@@ -58,7 +57,6 @@ namespace NetcoreApi.Controllers
 
         // GET: api/users/{id} - Returns ApiResponse<User>
         // ✅ AUTH GEREKMİYOR - Public endpoint
-        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<ApiResponse<User>>> GetUser(Guid id)
         {
@@ -75,7 +73,6 @@ namespace NetcoreApi.Controllers
         }
 
         // GET: api/users/{id}/simple - Returns User directly (no wrapper)
-        [AllowAnonymous]
         [HttpGet("{id}/simple")]
         public async Task<ActionResult<User>> GetUserSimple(Guid id)
         {
@@ -90,7 +87,6 @@ namespace NetcoreApi.Controllers
         }
 
         // GET: api/users/{id}/name - Returns primitive string
-        [AllowAnonymous]
         [HttpGet("{id}/name")]
         public async Task<ActionResult<string>> GetUserName(Guid id)
         {
@@ -105,7 +101,6 @@ namespace NetcoreApi.Controllers
         }
 
         // GET: api/users/count - Returns primitive int
-        [AllowAnonymous]
         [HttpGet("count")]
         public async Task<ActionResult<int>> GetUserCount()
         {
@@ -114,7 +109,6 @@ namespace NetcoreApi.Controllers
         }
 
         // GET: api/users/{id}/exists - Returns primitive bool
-        [AllowAnonymous]
         [HttpGet("{id}/exists")]
         public async Task<ActionResult<bool>> UserExists(Guid id)
         {
@@ -123,7 +117,6 @@ namespace NetcoreApi.Controllers
         }
 
         // GET: api/users/{id}/info - Returns Map<string, dynamic>
-        [AllowAnonymous]
         [HttpGet("{id}/info")]
         public async Task<ActionResult<Dictionary<string, object>>> GetUserInfo(Guid id)
         {
@@ -148,7 +141,6 @@ namespace NetcoreApi.Controllers
 
         // POST: api/users - Returns ApiResponse<User>
         // ✅ AUTH GEREKMİYOR - Registration endpoint
-        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<ApiResponse<User>>> CreateUser(CreateUserDto dto)
         {
@@ -181,18 +173,17 @@ namespace NetcoreApi.Controllers
 
         // PUT: api/users/{id} - Returns ApiResponse<User>
         // ✅ AUTH GEREKİYOR - Own profile update
-        [Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult<ApiResponse<User>>> UpdateUser(Guid id, UpdateUserDto dto)
         {
             _logger.LogInformation("Updating user: {UserId}", id);
 
             // Verify user can only update their own profile
-            var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            /*var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (currentUserId != id.ToString())
             {
                 return Forbid();
-            }
+            }*/
 
             var user = await _context.Users.FindAsync(id);
 
@@ -221,7 +212,6 @@ namespace NetcoreApi.Controllers
         }
 
         // PATCH: api/users/{id}/activate - Returns void (204 No Content)
-        [AllowAnonymous]
         [HttpPatch("{id}/activate")]
         public async Task<IActionResult> ActivateUser(Guid id)
         {
@@ -242,18 +232,17 @@ namespace NetcoreApi.Controllers
 
         // DELETE: api/users/{id} - Soft delete
         // ✅ AUTH GEREKİYOR - Own account delete
-        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<ApiResponse<bool>>> DeleteUser(Guid id)
         {
             _logger.LogInformation("Deleting user: {UserId}", id);
 
             // Verify user can only delete their own account
-            var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            /*var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (currentUserId != id.ToString())
             {
                 return Forbid();
-            }
+            }*/
 
             var user = await _context.Users.FindAsync(id);
 
